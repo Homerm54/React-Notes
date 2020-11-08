@@ -1,12 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import Main_Page from './Main_Page';
 import reportWebVitals from './reportWebVitals';
+
+import CssBaseline from "@material-ui/core/CssBaseline";
+
+import 'fontsource-roboto';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <CssBaseline />
+    <Main_Page />
   </React.StrictMode>,
   document.getElementById('root')
 );
