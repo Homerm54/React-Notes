@@ -1,4 +1,7 @@
 import React from "react";
+
+import { NavLink } from 'react-router-dom';
+
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
@@ -11,6 +14,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import AppBar from '@material-ui/core/AppBar';
+import Link from '@material-ui/core/Link';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -42,7 +46,17 @@ TabPanel.propTypes = {
 
 const TempList = (
   <List aria-label="To Do Notes">
-    <ListItem button>
+    <ListItem>
+      <Link component={NavLink} to='/note/Best Note Ever' color="inherit">
+        <ListItemText primary="Random Note" secondary='Jan 9, 2020' />
+      </Link>
+      <ListItemSecondaryAction>
+        <IconButton edge="end" aria-label="delete">
+          <DeleteIcon />
+        </IconButton>
+      </ListItemSecondaryAction>
+    </ListItem>
+    <ListItem>
       <ListItemText primary="Random Note" secondary='Jan 9, 2020' />
       <ListItemSecondaryAction>
         <IconButton edge="end" aria-label="delete">
@@ -50,15 +64,7 @@ const TempList = (
         </IconButton>
       </ListItemSecondaryAction>
     </ListItem>
-    <ListItem button>
-    <ListItemText primary="Random Note" secondary='Jan 9, 2020' />
-      <ListItemSecondaryAction>
-        <IconButton edge="end" aria-label="delete">
-          <DeleteIcon />
-        </IconButton>
-      </ListItemSecondaryAction>
-    </ListItem>
-    <ListItem button>
+    <ListItem>
       <ListItemText primary="Random Note" secondary='Jan 9, 2020' />
       <ListItemSecondaryAction>
         <IconButton edge="end" aria-label="delete">

@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Main_Page from './Main_Page';
+import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from "react-router-dom";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 
@@ -10,7 +11,9 @@ import 'fontsource-roboto';
 ReactDOM.render(
   <React.StrictMode>
     <CssBaseline />
-    <Main_Page />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
