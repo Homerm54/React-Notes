@@ -155,7 +155,7 @@ export default function MiniDrawer() {
             ["Register", <VpnKeyIcon />],
             ["Log Out", <ExitToAppIcon />],
             ["Account", <AccountCircleIcon />],
-            ["About", <InfoIcon />],
+            ["About Site", <InfoIcon />],
           ].map((item, index) => (
             <ListItem button key={index}>
               <ListItemIcon>{item[1]}</ListItemIcon>
@@ -170,6 +170,7 @@ export default function MiniDrawer() {
             ["New Note", <AddBoxIcon />],
             ["Edit Note", <CreateIcon />],
             ["Delete Note", <DeleteIcon />],
+            ["Note About", <InfoIcon />],
           ].map((item, index) => (
             <ListItem button key={index}>
               <ListItemIcon>{item[1]}</ListItemIcon>
