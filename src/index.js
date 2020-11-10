@@ -4,6 +4,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
 
+import { FirebaseContextProvider } from './Firebase';
+
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 import 'fontsource-roboto';
@@ -12,7 +14,9 @@ ReactDOM.render(
   <React.StrictMode>
     <CssBaseline />
     <BrowserRouter>
-      <App />
+      <FirebaseContextProvider>
+        <App />
+      </FirebaseContextProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

@@ -1,3 +1,5 @@
+import React, { useContext } from 'react';
+
 import Navbar from './pages/Navbar';
 import Dashboard from './pages/Dashboard';
 import Note from './pages/NotePage';
@@ -10,7 +12,13 @@ import NotFound404 from './pages/NotFound404';
 import { Switch, Route } from 'react-router-dom';
 import * as ROUTES from './constants/routes';
 
+import { FirebaseContext } from './Firebase';
+
 function App() {
+
+  const Firebase = useContext(FirebaseContext);
+  console.log('Firebase App Name:', Firebase.name);
+
   return (
     <>
       <Navbar />
