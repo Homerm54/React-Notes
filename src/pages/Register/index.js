@@ -78,8 +78,8 @@ export default function Page() {
             textColor="primary"
             centered
           >
-            <Tab label='Log In' id='login-form' />
-            <Tab label='Sing Up' id='signup-form' />
+            <Tab label='Sign In' id='login-form' />
+            <Tab label='Sign Up' id='signup-form' />
           </Tabs>
 
           <LogIn

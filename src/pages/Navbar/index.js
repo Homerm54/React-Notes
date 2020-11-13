@@ -1,7 +1,13 @@
 import React from "react";
+
+import { useDispatch } from "react-redux";
+import { auth } from 'redux/actions';
+
+// UI
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
+import Button from '@material-ui/core/Button';
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
@@ -104,8 +110,37 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
+  const dispatch = useDispatch();
+
+  function handleLogout() {
+
+    dispatch(auth.startLogout())
+  }
+
   return (
-    <div className={classes.root}>
+
+    <AppBar position="static">
+      <Toolbar>
+
+        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+          <MenuIcon />
+        </IconButton>
+
+        <Typography variant="h6" className={classes.title}>
+          React - Notes
+        </Typography>
+
+        <Button
+          color="inherit"
+          onClick={handleLogout}
+        >
+          Sign Out
+        </Button>
+
+      </Toolbar>
+    </AppBar>
+
+    /*<div className={classes.root}>
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
@@ -179,6 +214,6 @@ export default function MiniDrawer() {
           ))}
         </List>
       </Drawer>
-    </div>
+    </div>*/
   );
 }

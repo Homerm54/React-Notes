@@ -1,4 +1,4 @@
-import { types } from '../types';
+import { types } from 'redux/types';
 
 /**
  * Basic State:
@@ -20,7 +20,7 @@ import { types } from '../types';
  * }
  * `
  */
-export const authReducer = ( state = {/* Default Value */}, action) =>{
+export default function authReducer(state={/* Default Value */}, action){
 
   switch(action.type){
     case(types.login):
