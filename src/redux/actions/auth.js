@@ -79,10 +79,9 @@ export function startLogout(){
 }
 
 /**
- * @param {*} uid 
- * @param {*} displayName 
+ * 
  */
-export function logout(uid) {
+export function logout() {
   // Parameters to be provided by firebase
 
   return {
