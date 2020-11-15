@@ -87,19 +87,16 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     backgroundColor: theme.palette.background.paper,
     height: '100%',
-    paddingLeft: theme.spacing(7) + 1, // Match the heigh of the navbar
+    /*paddingLeft: theme.spacing(7) + 1, // Match the heigh of the navbar
     [theme.breakpoints.up("sm")]: {
       paddingLeft: theme.spacing(9) + 1,
-    },
+    },*/
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
   },
   navBar: {
-    paddingTop: "20%",
-    [theme.breakpoints.up("md")]: {
-      paddingTop: "7%",
-    },
+    paddingTop: theme.spacing(1),
   },
 }));
 

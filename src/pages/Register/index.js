@@ -10,9 +10,10 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
-import backgroundImage from './background-unsplash-dimmed.jpg';
+import backgroundImage from 'assets/background-unsplash-dimmed.jpg';
 
 const useStyles = makeStyles(theme => (
   {
@@ -30,11 +31,14 @@ const useStyles = makeStyles(theme => (
       },*/
     },
     container: {
-      display: 'flex',
-      height: '100%'
+      //display: 'flex',
+      height: '100%',
+      width: '100%',
+      paddingTop: theme.spacing(10),
     },
     formContainer: {
       margin: 'auto',
+      marginTop: theme.spacing(3),
     },
     form: {
       paddingLeft: '2rem',
@@ -67,6 +71,16 @@ export default function Page() {
   return (
     <main className={classes.root}>
       <Container maxWidth="sm" className={classes.container}>
+
+        <Typography
+          variant='h6'
+          component='h1'
+          align='center'
+          style={{color: 'whitesmoke',}}
+        >
+          Please, Sign Up or Register to make some awesome notes
+        </Typography>
+
         <Paper
           elevation={3}
           variant="outlined"

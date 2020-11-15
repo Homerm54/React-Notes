@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { auth } from 'redux/actions';
 
 // UI
@@ -101,6 +101,10 @@ export default function MiniDrawer() {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
+  const name = useSelector(state => {
+    if(state?.auth.uid) return state.auth.name;
+    return false;
+  });
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -119,7 +123,7 @@ export default function MiniDrawer() {
 
   return (
 
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Toolbar>
 
         <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
@@ -127,7 +131,7 @@ export default function MiniDrawer() {
         </IconButton>
 
         <Typography variant="h6" className={classes.title}>
-          React - Notes
+          { name||/*? `Hello, ${name}` :*/ 'React - Note'}
         </Typography>
 
         <Button
