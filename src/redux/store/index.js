@@ -5,11 +5,12 @@ import {
   compose
 } from 'redux';
 import thunk from 'redux-thunk';
-import { authReducer, uiReducer } from 'redux/reducers/';
+import { authReducer, uiReducer, noteReducer } from 'redux/reducers/';
 
 const singleReducer = combineReducers({
   auth: authReducer,
   ui: uiReducer,
+  notes: noteReducer,
 })
 
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
