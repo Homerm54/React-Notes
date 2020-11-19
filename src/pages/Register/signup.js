@@ -20,7 +20,10 @@ import AccountBoxOutlined from '@material-ui/icons/AccountBoxOutlined';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import HourglassFullIcon from '@material-ui/icons/HourglassFull';
-import googleLogo from './googl-icon.svg';
+import googleLogo from 'assets/google-icon.svg';
+
+
+
 
 const useStyles = makeStyles(theme => (
   {
@@ -54,6 +57,7 @@ const useStyles = makeStyles(theme => (
 ));
 
 
+
 export default function SignUpForm(props) {
 
   const classes = useStyles();
@@ -74,6 +78,7 @@ export default function SignUpForm(props) {
 
   const dispatch = useDispatch();
   const loading = useSelector(state => state.ui.loading);
+
 
   function isFormValid() {
 
@@ -100,6 +105,7 @@ export default function SignUpForm(props) {
       return false;
     };
 
+
     setError({
       email: false,
       name: false,
@@ -109,6 +115,7 @@ export default function SignUpForm(props) {
 
     return true;
   }
+
 
   function handleNormalSignUp(e) {
 
@@ -209,6 +216,7 @@ export default function SignUpForm(props) {
         }}
       />
 
+
       <Grid container className={classes.buttonContainer}>
 
         <Button
@@ -222,7 +230,9 @@ export default function SignUpForm(props) {
           }>
           Sign Up
         </Button>
+
       </Grid>
+
 
       <Grid container className={classes.dividerContainer}>
         <Grid item xs className={classes.divider}><Divider /></Grid>
@@ -231,6 +241,7 @@ export default function SignUpForm(props) {
         </Grid>
         <Grid item xs className={classes.divider}><Divider /></Grid>
       </Grid>
+
 
       <Grid container justify='center'>
         <Grid item>

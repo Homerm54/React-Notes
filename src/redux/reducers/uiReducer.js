@@ -1,8 +1,10 @@
 import { types } from 'redux/types';
+import { REGISTER } from 'constants/uiLocations';
 
 const initialState = {
-  loading: false,
+  loading: true,
   error: false,
+  location: REGISTER,
 }
 
 /**
@@ -12,14 +14,6 @@ const initialState = {
  * 
  * Error object should have the structure of:
  * 
- * {
- *    where: <Location in the UI tree where should be displayed the error>
- *            '[Auth] Log In'
- *    // extra fields that should be know by the component that originated the error and the component where the error will be displayed.
- * 
- * 
- * 
- * }
  */
 export default function uiReducer(state = initialState, action) {
 
@@ -52,6 +46,13 @@ export default function uiReducer(state = initialState, action) {
         loading: false
       };
 
+    case types.uiChangeUserLocation:
+
+      return {
+        ...state,
+        location: action.payload.location
+      }
+      
     default:
       return state;
   }

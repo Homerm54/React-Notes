@@ -10,5 +10,14 @@ export const types = {
   uiClearError: '[UI] Clear Error',
   uiStartLoading: '[UI] Start Loading',
   uiFinishLoading: '[UI] Finish Loading',
+  uiChangeUserLocation: '[UI] Change User Location',
 
+  // Note Related Actions
+  createNewNote: '[Note] Create New Note',
+  deleteNote: '[Note] Delete Note',
+  updateNote: '[Note] Update State Change',
+  setNotes: '[Note] Set User Notes',
+  setActiveNote: '[Note] Active Note Body',
+  clearNotes: '[Note] Clear Notes', // To be used on logout
+  
 }

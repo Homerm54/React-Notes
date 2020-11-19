@@ -24,3 +24,13 @@ export function finishLoading(){
     type: types.uiFinishLoading
   }
 }
+
+export function changeUserLocation(location){
+
+  return {
+    type: types.uiChangeUserLocation,
+    payload: {
+      location
+    }
+  }
+}

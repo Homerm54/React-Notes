@@ -1,32 +1,56 @@
+import { types } from 'redux/types';
+
 /**
  * Expected State of this Reducer:
  * 
  * {
- *    notes: [{
- *              id: , 
- *              title: , 
- *                // Allow multiple Notes with the same name, but no same category
- *              category: ,
- *            },],         - Array of notes created by the user, by category
- * 
- *    activeNote: {}, // Maybe only this one?
+ *    active_note_id: Note ID <String>,
+ *    note: { title, body, created, last_modified }
+ *    save: bool - indicate if user decided to save note
  * }
  * 
  */
 
 
 const initialState = {
-  notes: [],
+  notes: {},
+  note: {
+    title: 'New Note',
+    body: '-',
+    created: '-',
+    last_modified: '-',
+    id: '',
+  },
+  delete: false,
+  update: false,
 }
 
-export default function NotesReducer(state = initialState, action){
+export default function NotesReducer(state = initialState, action) {
 
-  switch (action.type){
-    /*case types.value:
-      
-      return state;*/
-  
+  switch (action.type) {
+    case types.setNotes:
+
+      return {
+        ...state,
+        notes: action.payload.notes
+      };
+
+    case types.setActiveNote:
+
+      return {
+        ...state,
+        note: action.payload.note
+      }
+
+    case types.updateNote:
+
+      return {
+        ...state,
+        update: action.payload.update
+      }
+
     default:
-    return state;
+      console.log('[Note] Default Case reached');
+      return state;
   }
 }

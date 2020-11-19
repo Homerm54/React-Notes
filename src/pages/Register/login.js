@@ -9,6 +9,7 @@ import { auth } from 'redux/actions';
 
 import TabPanel from './TabPanel';
 
+
 // UI
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -24,7 +25,9 @@ import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import HourglassFullIcon from '@material-ui/icons/HourglassFull';
 
-import googleLogo from './googl-icon.svg';
+import googleLogo from 'assets/google-icon.svg';
+
+
 
 const useStyles = makeStyles(theme => (
   {
@@ -75,6 +78,7 @@ export default function LogInForm(props) {
   const dispatch = useDispatch();
   const loading = useSelector(state => state.ui.loading);
 
+
   function isFormValid() {
 
     let errorObject = {};
@@ -101,6 +105,7 @@ export default function LogInForm(props) {
     return true;
   }
 
+
   function handleNormalLogin(e) {
     e.preventDefault();
     // Although startLoginEmailPassword isn't a reducer, thunk let us
@@ -114,10 +119,12 @@ export default function LogInForm(props) {
     }
   }
 
+
   function handleGoogleLogin() {
 
     dispatch(auth.initGoogleLogIn());
   }
+
 
   return (
     <TabPanel {...props} onSubmit={handleNormalLogin}>
@@ -163,7 +170,7 @@ export default function LogInForm(props) {
       <Grid container className={classes.buttonContainer}>
 
         <Button
-          disabled={loading}
+          disabled={true}
           component={Link}
           to={FIX_ACCOUNT}
           color="primary"
@@ -184,6 +191,7 @@ export default function LogInForm(props) {
         </Button>
       </Grid>
 
+
       <Grid container className={classes.dividerContainer}>
         <Grid item xs className={classes.divider}><Divider /></Grid>
         <Grid item xs={1} className={classes.text}>
@@ -191,6 +199,7 @@ export default function LogInForm(props) {
         </Grid>
         <Grid item xs className={classes.divider}><Divider /></Grid>
       </Grid>
+
 
       <Grid container justify='center'>
         <Grid item>

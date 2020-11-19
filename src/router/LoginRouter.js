@@ -1,6 +1,9 @@
 import React from 'react';
 import { DASHBOARD } from 'constants/routes';
 
+import { Route, Redirect } from 'react-router-dom';
+
+import PropTypes from 'prop-types';
 /**
  * 
  * @param {Bool} isAuthenticated 

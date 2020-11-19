@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+import { ui } from 'redux/actions';
+import { REGISTER } from 'constants/uiLocations';
+import { useDispatch } from 'react-redux';
 
 // Components
-
 import LogIn from './login';
 import SignUp from './signup';
 
@@ -15,6 +18,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import backgroundImage from 'assets/background-unsplash-dimmed.jpg';
 
+
+
 const useStyles = makeStyles(theme => (
   {
     root: {
@@ -24,14 +29,8 @@ const useStyles = makeStyles(theme => (
       backgroundColor: 'grey',
       backgroundImage: `url(${backgroundImage})`,
       height: '100%',
-      //paddingTop: '6rem',
-      /*paddingLeft: theme.spacing(7) + 1, // Match the heigh of the navbar
-      [theme.breakpoints.up("sm")]: {
-        paddingLeft: theme.spacing(9) + 1,
-      },*/
     },
     container: {
-      //display: 'flex',
       height: '100%',
       width: '100%',
       paddingTop: theme.spacing(10),
@@ -67,6 +66,14 @@ export default function Page() {
   const handleTabChange = (event, newValue) => {
     setCurrentFormValue(newValue);
   }
+
+  const dispatch = useDispatch();
+  
+  useEffect(() =>{
+  
+    dispatch(ui.changeUserLocation(REGISTER));
+  }, [dispatch]);
+  
 
   return (
     <main className={classes.root}>

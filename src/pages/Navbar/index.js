@@ -1,47 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from 'redux/actions';
+import * as uiLocation from 'constants/uiLocations';
+
+import ToolBox from './drawer'; // Like tool box
 
 // UI
+import { drawerWidth } from 'constants/ui';
+
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import Button from '@material-ui/core/Button';
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 
-import AssignmentIcon from "@material-ui/icons/Assignment";
-import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import InfoIcon from "@material-ui/icons/Info";
-import AddBoxIcon from '@material-ui/icons/AddBox';
-import CreateIcon from '@material-ui/icons/Create';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import DeleteIcon from '@material-ui/icons/Delete';
 
-const drawerWidth = 240;
+
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
+  menuButton: {
+    marginRight: 36,
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -51,61 +32,47 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
-  menuButton: {
-    marginRight: 36,
-  },
-  hide: {
-    display: "none",
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: "nowrap",
-  },
-  drawerOpen: {
-    width: drawerWidth,
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerClose: {
-    transition: theme.transitions.create("width", {
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    overflowX: "hidden",
-    width: theme.spacing(7) + 1,
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9) + 1,
-    },
-  },
-  toolbar: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
-  logo: {
-    color: "black",
   },
 }));
 
-export default function MiniDrawer() {
+
+
+export default function Navbar() {
+
   const classes = useStyles();
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false); // Display tool box?
+  const dispatch = useDispatch();
+
   const name = useSelector(state => {
-    if(state?.auth.uid) return state.auth.name;
+    if (state?.auth.uid) return state.auth.name;
     return false;
   });
 
+
+  const userLocation = useSelector(state => {
+    const { location } = state.ui;
+
+    switch (location) {
+      case uiLocation.DASHBOARD:
+        return 'Dashboard';
+      case uiLocation.NOTE_READ:
+        return 'Read Mode';
+      case uiLocation.NOTE_EDIT:
+        return 'Edit Mode'
+      default: // Like not authenticated
+        return false;
+    }
+  })
+
+
+  // Action Handler Section
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -114,110 +81,54 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
-  const dispatch = useDispatch();
-
   function handleLogout() {
 
     dispatch(auth.startLogout())
   }
 
+
+
+
+  if (!userLocation) return false;
+
+
   return (
-
-    <AppBar position="sticky">
-      <Toolbar>
-
-        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-          <MenuIcon />
-        </IconButton>
-
-        <Typography variant="h6" className={classes.title}>
-          { name||/*? `Hello, ${name}` :*/ 'React - Note'}
-        </Typography>
-
-        <Button
-          color="inherit"
-          onClick={handleLogout}
-        >
-          Sign Out
-        </Button>
-
-      </Toolbar>
-    </AppBar>
-
-    /*<div className={classes.root}>
+    <>
       <AppBar
-        position="fixed"
+        position="sticky"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
       >
+
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: open,
-            })}
-          >
-            <MenuIcon />
-          </IconButton>
-          <AssignmentIcon className={classes.logo} />
-          <Typography variant="h6" noWrap>
-            React - Notes
+
+          {!open &&
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="menu"
+              onClick={handleDrawerOpen}
+            >
+              <MenuIcon />
+            </IconButton>
+          }
+
+          <Typography variant="h6" className={classes.title}>
+            {name ? `${name} - ${userLocation}` : 'React - Note'}
           </Typography>
+
+
         </Toolbar>
       </AppBar>
-      <Drawer
-        variant="permanent"
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        })}
-        classes={{
-          paper: clsx({
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
-          }),
-        }}
-        component='nav'
-      >
-        <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronRightIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        <List>
-          {[
-            ["Register", <VpnKeyIcon />],
-            ["Log Out", <ExitToAppIcon />],
-            ["Account", <AccountCircleIcon />],
-            ["About Site", <InfoIcon />],
-          ].map((item, index) => (
-            <ListItem button key={index}>
-              <ListItemIcon>{item[1]}</ListItemIcon>
-              <ListItemText primary={item[0]} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {[
-            ["Dashboard", <DashboardIcon />],
-            ["New Note", <AddBoxIcon />],
-            ["Edit Note", <CreateIcon />],
-            ["Delete Note", <DeleteIcon />],
-            ["Note About", <InfoIcon />],
-          ].map((item, index) => (
-            <ListItem button key={index}>
-              <ListItemIcon>{item[1]}</ListItemIcon>
-              <ListItemText primary={item[0]} />
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-    </div>*/
+
+      <ToolBox // Displayed aside
+        open={open}
+        handleDrawerClose={handleDrawerClose}
+        handleLogout={handleLogout}
+      />
+
+    </>
   );
 }

@@ -1,6 +1,9 @@
-/**
- * Form Component, to be used with MUI tabs
- */
+import React from 'react';
+
+import PropTypes from "prop-types";
+
+
+
 export default function TabPanel(props) {
   const { children, value, index, onSubmit, ...other } = props;
 
@@ -17,3 +20,10 @@ export default function TabPanel(props) {
     </form>
   );
 }
+
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+};
