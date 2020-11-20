@@ -11,27 +11,28 @@ export function createNewNote() {
 
     dispatch(startLoading());
 
-    const { uid } = getState().auth;
+    const uid = getState().auth.uid;
+    const date = new Date().getTime();
 
     const newNote = {
       title: 'Brand New Note',
       body: '### To be filled!.',
-      created: new Date().getTime(),
-      last_modified: new Date().getTime(),
-      category: 'To Do',
+      created: date,
+      last_modified: date,
+      category: "To Do",
     }
 
     db.collection(`${uid}/notes/notes`).add(newNote)
       .then(docRef => {
 
+        const notes = getState().notes.notes;
+        notes['To Do'].push(newNote);
+        
+        // Add new note to State (Like the local storage).
         dispatch(setActiveNote({
           id: docRef.id,
           ...newNote
         }));
-
-        // Add new note to State (Like the local storage).
-        const notes = getState().notes.notes;
-        notes['To Do'].push(newNote);
 
         dispatch(setNotes(notes));
         dispatch(finishLoading());
@@ -99,7 +100,7 @@ export function startUpdateNote(data) {
 
     dispatch(startLoading());
 
-    const { uid } = getState().auth;
+    const uid = getState().auth.uid;
 
     db.collection(`${uid}/notes/notes`).doc(data.id).update(
       {
