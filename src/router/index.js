@@ -16,7 +16,7 @@ import Note from 'pages/NotePage';
 import Register from 'pages/Register';
 import NotFound404 from 'pages/NotFound404';
 import Loading from 'loading';
-
+import Error from 'pages/Alert';
 
 export function AppRouter() {
 
@@ -65,6 +65,7 @@ export function AppRouter() {
   return (
     <>
       <Navbar />
+      <Error />
       <Switch>
 
         <SignInRoute

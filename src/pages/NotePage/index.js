@@ -6,7 +6,7 @@ import { NOTE_READ, NOTE_EDIT } from 'constants/uiLocations';
 import { drawerSpacing } from "constants/ui";
 
 import MarkdownRenderer from './readMode';
-import EditMode from './editMode';
+import { NoteEditor, CategorySelector, TitleEditor } from './editMode';
 import Loading from 'loading';
 
 import useForm from 'hooks/useForm';
@@ -17,11 +17,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
-import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 
 
 
@@ -40,6 +35,10 @@ const useStyle = makeStyles(theme => ({
   information: {
     marginBottom: theme.spacing(1),
     marginTop: theme.spacing(0.8),
+  },
+  selector: {
+    marginTop: 'auto',
+    marginBottom: 'auto',
   }
 }))
 
@@ -50,32 +49,32 @@ export default function Note() {
 
   const classes = useStyle();
   const dispatch = useDispatch();
-  
+
   const Note = useSelector(state => state.notes.note);
   const isLoading = useSelector(state => state.ui.loading);
   const toUpdate = useSelector(state => state.notes.update);
   const inEditMode = useSelector(state => {
-    
+
     if (state.ui.location === NOTE_EDIT) return true;
     return false; // userLocation will be changed to NOTE_READ later
   });
-  
+
   const [values, handleInputChange] = useForm({
     title: Note.title,
     body: Note.body,
     category: Note.category,
     id: Note.id,
   })
-  
+
 
   useEffect(() => {
     dispatch(ui.changeUserLocation(NOTE_READ));
   }, [dispatch]);
 
 
-  useEffect(() =>{ // To avoid any potential loop
+  useEffect(() => { // To avoid any potential loop
     toUpdate && dispatch(note.startUpdateNote(values));
-  }, [toUpdate]);
+  }, [toUpdate, dispatch, note]);
 
 
 
@@ -85,13 +84,9 @@ export default function Note() {
     <Paper className={classes.root} elevation={3}>
       {inEditMode ?
         <Typography variant="h4" >
-          <TextField
-            name='title'
-            onChange={handleInputChange}
-            label="Title"
-            variant="outlined"
-            value={values.title}
-            required
+          <TitleEditor 
+            values={values}
+            handleInputChange={handleInputChange} 
           />
         </Typography>
         :
@@ -101,57 +96,41 @@ export default function Note() {
       <Grid container className={classes.information}>
 
         <Grid item xs={12} md>
-          <Typography color='textSecondary' variant='subtitle2'>
+          <Typography color='textSecondary' variant='body'>
             Created: {new Date(Note.created).toDateString()}
           </Typography>
         </Grid>
 
         <Grid item xs={12} md>
-          <Typography color='textSecondary' variant='subtitle2'>
+          <Typography color='textSecondary' variant='body'>
             Last Modified: {new Date(Note.last_modified).toDateString()}
           </Typography>
         </Grid>
 
-        <Grid item xs={12} md>
+        <Grid container item xs={12} md spacing={2}>
 
           {inEditMode ?
 
-            <FormControl size='small'>
-
-              <InputLabel shrink  id="Category">
-                Category
-              </InputLabel>
-
-              <Select
-                labelId="Category"
-                label="Category"
-                value={values.category}
-                onChange={handleInputChange}
-                name='category'
-              >
-                <MenuItem value='To Do'>To Do</MenuItem>
-                <MenuItem value='Work'>Work</MenuItem>
-                <MenuItem value='Reminders'>Reminders</MenuItem>
-                <MenuItem value='Study'>Study</MenuItem>
-              </Select>
-            </FormControl>
-
+            <CategorySelector
+              values={values}
+              handleInputChange={handleInputChange}
+            />
             :
-
-            <Typography color='textSecondary' variant='subtitle2'>
-              Category: {values.category}
-            </Typography>
+            <Grid item>
+              <Typography color='textSecondary' variant='body'>
+                Category: {values.category}
+              </Typography>
+            </Grid>
           }
-          
-        </Grid>
 
+        </Grid>
       </Grid>
 
       <Divider />
       <br />
 
       {inEditMode ?
-        <EditMode
+        <NoteEditor
           text={values.body}
           handleChange={handleInputChange}
         />

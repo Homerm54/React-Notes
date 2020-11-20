@@ -1,22 +1,25 @@
 import { types } from 'redux/types';
 import { firebase, googleAuthProvider } from 'firebase_folder';
-import { startLoading, finishLoading } from './ui';
+import { startLoading, finishLoading, setError } from './ui';
 
-/**
- * Register a new user
- */
+
+
 export function initSignUpWithEmail(email, password, name) {
 
   return dispatch => {
     dispatch(startLoading());
+
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(async ({ user }) => {
         await user.updateProfile({ displayName: name });
-        dispatch(finishLoading());
         dispatch(login(user.uid, user.displayName));
-      }).catch(e => {
-        //TODO
-        console.log(e);
+        dispatch(finishLoading());
+
+      }).catch(err => {
+
+        console.log(`Error Signing User: ${err}`);
+        dispatch(setError(`Error Signing User: ${err}`));
+        dispatch(finishLoading());
       })
   }
 }
@@ -24,13 +27,16 @@ export function initSignUpWithEmail(email, password, name) {
 export function startLoginEmailPassword(email, password) {
   return dispatch => { // Callback function that will be fired by thunk
     dispatch(startLoading());
+
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(({ user }) => {
         dispatch(finishLoading());
         dispatch(login(user.uid, user.displayName));
-      }).catch(e => {
-        //TODO
-        console.log(e);
+      }).catch(err => {
+        
+        console.log(`Error Signing User: ${err}`);
+        dispatch(setError(`Error Signing User: ${err}`));
+        dispatch(finishLoading());
       })
   }
 }
@@ -46,8 +52,16 @@ export function initGoogleLogIn() {
 
         dispatch(login(user.uid, user.displayName))
       })
+      .catch( err =>{
+
+        console.log(`Error Signing User with Google: ${err}`);
+        dispatch(setError(`Error Signing User with Google: ${err}`));
+        dispatch(finishLoading());
+      })
   }
 }
+
+
 
 /**
  * @param {*} uid 
@@ -72,11 +86,15 @@ export function startLogout(){
     .then(()=>{
       dispatch(logout())
     })
-    .catch(e =>{
-      console.log('Sign Out error to handle', e);
+    .catch(err =>{
+
+      console.log(`Error Signing out User: ${err}`);
+      dispatch(setError(`Error Signing out User: ${err}`));
+      dispatch(finishLoading());
     })
   }
 }
+
 
 /**
  * 

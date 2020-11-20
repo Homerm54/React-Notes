@@ -50,7 +50,6 @@ export default function NotesReducer(state = initialState, action) {
       }
 
     default:
-      console.log('[Note] Default Case reached');
       return state;
   }
 }

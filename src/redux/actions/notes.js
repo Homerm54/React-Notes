@@ -1,13 +1,13 @@
 import { types } from 'redux/types';
 import { db } from "firebase_folder";
-import { startLoading, finishLoading } from "./ui";
+import { startLoading, finishLoading, setError } from "./ui";
 import helperLoadNotes from 'helpers/loadNotes';
 
 
 
 export function createNewNote() {
 
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
 
     dispatch(startLoading());
 
@@ -21,27 +21,35 @@ export function createNewNote() {
       category: 'To Do',
     }
 
-    const docRef = await db.collection(`${uid}/notes/notes`).add(newNote);
+    db.collection(`${uid}/notes/notes`).add(newNote)
+      .then(docRef => {
 
-    dispatch(setActiveNote({
-      id: docRef.id, 
-      ...newNote
-    }));
+        dispatch(setActiveNote({
+          id: docRef.id,
+          ...newNote
+        }));
 
-    // Add new note to State (Like the local storage).
-    const notes = getState().notes.notes;
-    notes['To Do'].push(newNote);
+        // Add new note to State (Like the local storage).
+        const notes = getState().notes.notes;
+        notes['To Do'].push(newNote);
 
-    dispatch(setNotes(notes));
-    dispatch(finishLoading());
+        dispatch(setNotes(notes));
+        dispatch(finishLoading());
 
+      })
+      .catch(err => {
+
+        console.log(`Error creating new note: ${err}`);
+        dispatch(setError(`Error creating new note: ${err}`));
+        dispatch(finishLoading());
+      });
   }
 }
 
 
 
-export function setNotes(notes){
-  
+export function setNotes(notes) {
+
   return {
     type: types.setNotes,
     payload: {
@@ -52,7 +60,7 @@ export function setNotes(notes){
 
 
 
-export function setActiveNote(note){
+export function setActiveNote(note) {
 
   return {
     type: types.setActiveNote,
@@ -64,41 +72,53 @@ export function setActiveNote(note){
 
 
 
-export function loadNotes(){
+export function loadNotes() {
 
-  return async (dispatch, getState) =>{
+  return (dispatch, getState) => {
 
     const uid = getState().auth.uid;
 
-    const notes = await helperLoadNotes(uid);
+    helperLoadNotes(uid).then(notes => {
 
-    dispatch(setNotes(notes));
-    dispatch(finishLoading());
+      dispatch(setNotes(notes));
+      dispatch(finishLoading());
+    }).catch(err => {
+
+      console.log(`Error Loading User Notes: ${err}`);
+      dispatch(setError(`Error Loading User Notes: ${err}`));
+      dispatch(finishLoading());
+    })
   }
 }
 
 
 
-export function startUpdateNote(data){
+export function startUpdateNote(data) {
 
-  return async (dispatch, getState) =>{
-    
+  return (dispatch, getState) => {
+
     dispatch(startLoading());
 
     const { uid } = getState().auth;
 
-    await db.collection(`${uid}/notes/notes`).doc(data.id).update(
+    db.collection(`${uid}/notes/notes`).doc(data.id).update(
       {
         title: data.title,
         body: data.body,
         last_modified: new Date().getTime(),
         category: data.category,
       }
-    )
+    ).then(() => {
 
-    dispatch(setActiveNote(data));
-    dispatch(clearUpdateNote());
-    dispatch(finishLoading());
+      dispatch(setActiveNote(data));
+      dispatch(clearUpdateNote());
+      dispatch(loadNotes());
+    }).catch(err => {
+
+      console.log(`Error Updating Note: ${err}`);
+      dispatch(setError(`Error Updating Note: ${err}`));
+      dispatch(finishLoading());
+    })
   }
 }
 
@@ -115,7 +135,7 @@ export function updateNote() {
 
 
 
-export function clearUpdateNote(){
+export function clearUpdateNote() {
   return {
     type: types.updateNote,
     payload: {
@@ -126,23 +146,30 @@ export function clearUpdateNote(){
 
 
 
-export function deleteNote(noteId){
+export function deleteNote(noteId) {
 
-  return async (dispatch, getState) =>{
+  return (dispatch, getState) => {
 
     dispatch(startLoading());
 
     const uid = getState().auth.uid;
-    const note_id = noteId || getState().note.id;
-    db.collection(`${uid}/notes/notes`).doc(note_id).delete();
+    const note_id = noteId || getState().notes.note.id;
 
-    dispatch(loadNotes()); // Start Loading will fire the stop loading
-    
+    db.collection(`${uid}/notes/notes`).doc(note_id).delete()
+      .then(() => {
+
+        dispatch(loadNotes()); // Start Loading will fire the stop loading
+      }).catch(err => {
+
+        console.log(`Error Deleting Note: ${err}`);
+        dispatch(setError(`Error Deleting Note: ${err}`));
+        dispatch(finishLoading());
+      });
   }
 }
 
 
-export function clearNotesOnMemory(){
+export function clearNotesOnMemory() {
 
   return {
     type: types.clearNotes,

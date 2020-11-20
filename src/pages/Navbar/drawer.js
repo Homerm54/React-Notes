@@ -98,30 +98,36 @@ export default function ToolBox({ open, handleDrawerClose, handleLogout }) {
   // Handle Action Section
   function editMode() {
     dispatch(ui.changeUserLocation(uiLocations.NOTE_EDIT));
+    handleDrawerClose();
   }
 
   function readMode() {
     dispatch(ui.changeUserLocation(uiLocations.NOTE_READ));
+    handleDrawerClose();
   }
 
   function deleteNote() {
-    dispatch(note.deleteNote());
     history.push(DASHBOARD);
+    dispatch(note.deleteNote());
+    handleDrawerClose();
   }
 
   function createNewNote() {
     dispatch(note.createNewNote()) // Dispatch here
+    handleDrawerClose();
     history.push(NOTE);
   }
 
   function saveNote() {
     dispatch(note.updateNote());
+    handleDrawerClose();
   }
 
 
 
   return (
     <Drawer
+      onClick={handleDrawerClose}
       variant="permanent"
       anchor='left'
       className={clsx(classes.drawer, {
@@ -155,7 +161,7 @@ export default function ToolBox({ open, handleDrawerClose, handleLogout }) {
       <Divider />
 
       <List>
-        <ListItem component={Link} to={DASHBOARD} disabled={isLoading}>
+        <ListItem component={Link} to={DASHBOARD}>
           <ListItemIcon>
             <DashboardIcon className={classes.white} />
             </ListItemIcon>
